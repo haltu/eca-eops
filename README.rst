@@ -2,12 +2,19 @@
 eOPS
 ****
 
+Shows the finnish curriculum as a living document.
+
 Infra requirements
 ==================
 
 * Does not need a database :)
 * Sentry
 * NewRelic
+
+Deployment to Heroku
+====================
+
+This app uses Buildout based buildpack. With commands below you should be able to deploy your own copy.
 
 ::
 
