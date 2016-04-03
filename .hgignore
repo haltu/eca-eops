@@ -1,0 +1,24 @@
+syntax: glob
+
+parts
+eggs
+bin
+develop-eggs
+downloads
+*.egg-info
+.installed.cfg
+project/database.db
+.DS_Store
+*.pyc
+.svn
+.git
+.Trashes
+.fseventsd
+.Spotlight*
+.directory
+.coverage
+*.swp
+doc/build/
+.mr.developer.cfg
+*.orig
+staticroot

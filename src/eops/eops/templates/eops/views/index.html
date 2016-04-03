@@ -1,0 +1,151 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Elävä opetussuunnitelma</title>
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/static/eops/styles/normalize.css">
+    <link rel="stylesheet" href="/static/eops/styles/app.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Condensed:700italic,700,400,300italic,300,400italic|Roboto:400,300,300italic,400italic,500,500italic,700,700italic,900,900italic,100italic,100">
+    <script src="/static/eops/scripts/vendor/palikka.js"></script>
+  </head>
+  <body>
+    <header class="noselect">
+      <h1>Elävä opetussuunitelma</h1>
+    </header>
+    <div class="action action-main noselect"><i class="material-icons">&#xE317;</i></div>
+    <div class="action action-info noselect"><i class="action-info-icon-inactive material-icons">&#xE88F;</i><i class="action-info-icon-active material-icons">&#xE5CD;</i></div>
+
+    <div id="view-main" class="view">
+      <div id="view-main-container" class="view-container">
+      </div>
+    </div>
+    <div id="view-article" class="view">
+      <div id="view-article-container" class="view-container">
+      </div>
+    </div>
+
+    <div id="info">
+
+      <h2>Elävä opetussuunitelma</h2>
+
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis placerat nisl ut velit dignissim vulputate. Sed varius nec elit in tristique. Sed in libero nulla. Quisque vel mauris ante. Nunc quis sapien urna. Etiam sed mauris ut sapien fermentum volutpat. In vitae lacus dapibus, pulvinar ex sed, aliquet nunc. Integer non risus odio. Fusce pretium dapibus mi, tempus tristique magna vestibulum vel.</p>
+
+      <p>Mauris sollicitudin efficitur libero in elementum. Curabitur pellentesque, sapien id commodo volutpat, mauris magna gravida urna, ut molestie mauris justo vitae enim. Morbi ut diam blandit, congue ante vel, iaculis magna. Curabitur rutrum sapien non lacinia malesuada. Sed tincidunt enim nisl, vel blandit sapien sodales ac. Nullam justo nibh, ultricies sed enim et, vehicula pellentesque tortor. Maecenas et mollis libero. Nulla dictum eu sapien vel euismod. Mauris quis sapien metus. Vivamus purus velit, blandit a leo vitae, fringilla porttitor magna. Mauris malesuada non enim a fermentum. Aliquam porta vehicula suscipit. Sed tempor varius massa non egestas.</p>
+
+      <p>Integer eu vulputate felis. Sed feugiat ultrices dui, commodo accumsan tellus condimentum a. Integer id porta elit, non ullamcorper urna. Mauris lacinia elementum tellus at blandit. Aenean placerat orci ac efficitur suscipit. Fusce viverra convallis justo ut scelerisque. Sed aliquam, libero at varius malesuada, metus est ultricies quam, in ultrices ligula arcu in ex. Nunc quis felis nec ante tincidunt faucibus commodo sed neque. Duis ut arcu et purus convallis tincidunt ut sed velit. Pellentesque risus diam, faucibus id mauris a, interdum dictum risus. Suspendisse dapibus nulla justo, non aliquet tortor ullamcorper ac.</p>
+
+      <p>Integer est nulla, venenatis quis nulla non, porta maximus sapien. In hac habitasse platea dictumst. Nunc nunc dolor, tristique in accumsan quis, mattis ut lectus. Aliquam accumsan volutpat massa et malesuada. Cras efficitur purus ligula, vel lacinia metus consectetur sed. Nulla libero dolor, tempor convallis justo in, molestie venenatis ligula. Sed facilisis velit at augue bibendum convallis at vitae eros. Nullam vel porttitor ante. Suspendisse et tempor mi, interdum volutpat mi. Duis viverra, nisl consequat ornare varius, nunc eros fermentum augue, a mattis elit nulla ut lectus.</p>
+
+      <p>Aenean sit amet turpis eros. Curabitur auctor lacus et sapien placerat, non consequat tortor ullamcorper. Suspendisse justo augue, ornare vel dapibus in, pulvinar at tortor. Praesent id risus sollicitudin, maximus quam at, lacinia nibh. In dui felis, mattis sed est vitae, fringilla luctus felis. Curabitur at blandit arcu. Mauris congue tincidunt iaculis. Integer enim ligula, scelerisque vel tincidunt eget, euismod ac arcu. Donec rhoncus at lorem non dignissim. Donec quis egestas augue. Phasellus convallis tellus consectetur tortor suscipit, at ornare sapien laoreet. Sed id velit et orci fringilla suscipit. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aenean porttitor dictum lobortis. Cras sed risus eu metus condimentum dignissim.</p>
+
+    </div>
+
+    {% verbatim %}
+
+      <template id="tpl-view-main">
+        <div class="category-items noselect">
+          <div class="category-items-container">
+            {{# categories }}
+              <div class="category-item" data-id="{{ id }}" data-article="{{ articles.0 }}">
+                <div class="category-item-link" style="background-color: {{ color }};">
+                  <div class="category-item-table">
+                    <div class="category-item-td">
+                      {{ title }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {{/ categories }}
+          </div>
+        </div>
+      </template>
+
+      <template id="tpl-view-category">
+
+        <div class="category-detail">
+
+          <div class="category-info" style="background-color: {{ category.color }};">
+            <table>
+              <tr>
+                <td>
+                  <h2 class="category-info-title">{{ category.title }}</h2>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="category-info-description">
+                    <div class="category-info-description-content">{{ category.description }}</div>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </div>
+
+          <div class="category-articles">
+            {{# category.articles }}
+              <div class="category-article noselect {{# active }}active{{/ active }}" data-id="{{ id }}">{{ title }}</div>
+            {{/ category.articles }}
+          </div>
+
+          <div class="category-article-detail">
+            <table>
+              <tr>
+                <td>
+                  <h2 class="category-article-detail-title">{{ article.title }}</h2>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="category-article-detail-description">
+                    <div class="category-article-detail-description-content">{{ article.content }}</div>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </div>
+
+        </div>
+
+      </template>
+
+      <template id="tpl-article">
+
+        <div class="category-article-detail">
+          <table>
+            <tr>
+              <td>
+                <h2 class="category-article-detail-title">{{ article.title }}</h2>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="category-article-detail-description">
+                  <div class="category-article-detail-description-content">{{ article.content }}</div>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </div>
+
+      </template>
+
+    {% endverbatim %}
+
+    <script src="/static/eops/scripts/vendor/jquery.js"></script>
+    <script src="/static/eops/scripts/vendor/jquery.csrf.js"></script>
+    <script src="/static/eops/scripts/vendor/hogan.js"></script>
+    <script src="/static/eops/scripts/vendor/snabbt.js"></script>
+    <script src="/static/eops/scripts/vendor/lodash.js"></script>
+    <script>
+    palikka.define('app.data', ['_', 'app.color'], function (_, color) {
+      var data = {{ data|safe }};
+      return data;
+      });
+    </script>
+    <script src="/static/eops/scripts/app.js"></script>
+
+  </body>
+</html>

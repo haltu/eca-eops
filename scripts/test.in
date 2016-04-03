@@ -1,0 +1,8 @@
+#!/bin/sh
+
+clear
+bin/django test \
+eops --attr='!slow' --cover-package=eops \
+--with-coverage --with-html \
+--settings=project.${test:settings}
+
