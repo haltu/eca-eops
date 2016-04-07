@@ -15,11 +15,15 @@
     <header class="noselect">
       <h1>Elävä opetussuunitelma</h1>
     </header>
-    <div class="action action-main noselect"><i class="material-icons">&#xE317;</i></div>
+    <div class="action action-back noselect"><i class="material-icons">&#xE317;</i></div>
     <div class="action action-info noselect"><i class="action-info-icon-inactive material-icons">&#xE88F;</i><i class="action-info-icon-active material-icons">&#xE5CD;</i></div>
 
     <div id="view-main" class="view">
       <div id="view-main-container" class="view-container">
+      </div>
+    </div>
+    <div id="view-connections" class="view">
+      <div id="view-connections-container" class="view-container">
       </div>
     </div>
     <div id="view-article" class="view">
@@ -49,7 +53,7 @@
         <div class="category-items noselect">
           <div class="category-items-container">
             {{# categories }}
-              <div class="category-item" data-id="{{ id }}" data-article="{{ articles.0 }}">
+              <div class="category-item" data-id="{{ id }}" data-article="{{ articles.0 }}" data-type="{{ type }}">
                 <div class="category-item-link" style="background-color: {{ color }};">
                   <div class="category-item-table">
                     <div class="category-item-td">
@@ -67,7 +71,7 @@
 
         <div class="category-detail">
 
-          <div class="category-info" style="background-color: {{ category.color }};">
+          <div class="category-info" style="background-color: {{ category.color.transparent }};">
             <table>
               <tr>
                 <td>
@@ -134,15 +138,17 @@
 
     {% endverbatim %}
 
+    <script src="/static/eops/scripts/vendor/husl.js"></script>
+    <script src="/static/eops/scripts/vendor/tinycolor.js"></script>
     <script src="/static/eops/scripts/vendor/jquery.js"></script>
     <script src="/static/eops/scripts/vendor/jquery.csrf.js"></script>
     <script src="/static/eops/scripts/vendor/hogan.js"></script>
     <script src="/static/eops/scripts/vendor/snabbt.js"></script>
     <script src="/static/eops/scripts/vendor/lodash.js"></script>
     <script>
-    palikka.define('app.data', ['_', 'app.color'], function (_, color) {
-      var data = {{ data|safe }};
-      return data;
+      palikka.define('app.data', function () {
+        var data = {{ data|safe }};
+        return data;
       });
     </script>
     <script src="/static/eops/scripts/app.js"></script>
