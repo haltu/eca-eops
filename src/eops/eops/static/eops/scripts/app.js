@@ -59,7 +59,9 @@ palikka
     if (type === 'main') {
 
       var tplData = _.merge({}, {
-        categories: _.values(data.categories).slice(0, maxCategories)
+        categories: _.filter(_.values(data.categories), function isTop(category) {
+          return _.indexOf(data.top, category.id) !== -1;
+        }).slice(0, maxCategories)
       });
 
       _.forEach(tplData.categories, colorizeCategory);
@@ -629,6 +631,10 @@ palikka
 
       });
 
+      $targetLink.css({
+        zIndex: 20
+      });
+
       // Animate target category into correct position.
       snabbt($targetLink.get(0), {
         fromRotation: [0, 0, 0],
@@ -942,19 +948,6 @@ palikka
       return;
     }
 
-    // Get items and prepare data.
-    var $categoryItems = $connectionsViewContainer.find('.category-item');
-    var $categoryLinks = $connectionsViewContainer.find('.category-item-link');
-    var $targetItem = $connectionsViewContainer.find('.category-item[data-type="main-category"]');
-    var $targetLink = $targetItem.find('.category-item-link');
-    var $otherItems = $categoryItems.not($targetItem);
-    var $otherLinks = $categoryLinks.not($targetLink);
-    var categoryId = parseInt($targetItem.attr('data-id'));
-    var animDeferreds = [palikka.defer()];
-
-    // Set active cateogry/article data.
-    activeCategory = categoryId;
-
     // Setup states.
     activeView = $mainView;
     isTransitioningView = true;
@@ -962,50 +955,154 @@ palikka
     // Reset categories view content.
     $mainViewContainer.html(render('main'));
 
-    // Setup non-target cateogries for animation.
-    $otherItems
-    .css('opacity', $otherItems.first().css('opacity'))
-    .css('transform', $otherItems.first().css('transform'))
-    .css('transition', 'none');
+    // Get mainview items items
+    var $categoryItems = $mainViewContainer.find('.category-item');
+    var $categoryLinks = $mainViewContainer.find('.category-item-link');
+    var $targetItem = $categoryItems.filter('[data-id="' + activeCategory + '"]');
+    var $targetLink = $targetItem.find('.category-item-link');
+    var $otherItems = $categoryItems.not($targetItem);
+    var $otherLinks = $categoryLinks.not($targetLink);
+    var categoryId = parseInt($targetItem.attr('data-id'));
+
+    // Get connectionsview items items
+    var $currentCategoryItems = $connectionsViewContainer.find('.category-item');
+    var $currentCategoryLinks = $connectionsViewContainer.find('.category-item-link');
+    var $currentItem = $currentCategoryItems.filter('[data-type="main-category"]');
+    var $currentLink = $currentItem.find('.category-item-link');
+    var $currentOtherItems = $currentCategoryItems.not($currentItem);
+    var $currentOtherLinks = $currentCategoryLinks.not($currentLink);
+
+    // Get target items position data for animating the category info.
+    var animDeferreds = [palikka.defer()];
+    var currentBoundingRect = $currentLink.get(0).getBoundingClientRect();
+    var currentOtherLinksData = [];
+    var currentLinkOffset = {
+      x: currentBoundingRect.width / 2 + 10,
+      y: currentBoundingRect.height / 2 + 10
+    };
+    if ($targetLink.length) {
+      var targetBoundingRect = $targetLink.get(0).getBoundingClientRect();
+      var targetPos = {
+        x: targetBoundingRect.left - currentBoundingRect.left + currentLinkOffset.x,
+        y: targetBoundingRect.top - currentBoundingRect.top + currentLinkOffset.y
+      };
+    }
+
+    $currentOtherLinks.each(function (index, element) {
+
+      var boundingRect = element.getBoundingClientRect();
+      currentOtherLinksData[index] = {};
+      currentOtherLinksData[index].boundingRect = boundingRect;
+      currentOtherLinksData[index].animPos = {
+        x: currentBoundingRect.left - boundingRect.left,
+        y: currentBoundingRect.top - boundingRect.top,
+      };
+
+    });
 
     // Remove hover and unhonver classes.
     hoverTimeout = clearTimeout(hoverTimeout);
-    $categoryItems.removeClass('hover unhover');
+    $currentCategoryItems.removeClass('hover unhover');
 
-    // Hide all categories except the target category.
-    snabbt(_.shuffle($otherLinks.get()), {
+    // Hide back button.
+    snabbt($actionBack.get(0), {
       fromOpacity: 1,
       opacity: 0,
-      fromScale: [1, 1],
-      scale: [0, 0],
-      delay: function (i) { return i * 30; },
-      duration: 300,
-      easing: 'easeOut',
+      fromPosition: [0, 0, 0],
+      position: [-$actionBack.width(), 0, 0],
+      duration: 400,
+      easing: 'easeIn',
       allDone: function () {
-        animDeferreds[0].resolve();
+        $actionBack.get(0).style.display = 'none';
+        $actionBack.get(0).offsetHeight;
+        $actionBack.get(0).style.display = '';
       }
     });
 
+    $currentItem.css({
+      transition: 'none',
+      zIndex: 20
+    })
 
-    palikka.when(animDeferreds).then(function () {
+    // Hide all categories except the target category.
+    snabbt($currentOtherLinks.get(), {
+      fromOpacity: 1,
+      opacity: 0,
+      fromScale: [1, 1],
+      scale: [0.7, 0.7],
+      fromPosition: [0, 0, 0],
+      position: function (i, total) {
+        return [currentOtherLinksData[i].animPos.x, currentOtherLinksData[i].animPos.y, 0];
+      },
+      delay: function (i, total) {
+        return i * 30;
+      },
+      duration: 300,
+      easing: 'easeOut',
+    });
+
+    if ($targetItem.length) {
+      $currentItem.attr('data-type', '');
+      snabbt($currentItem.get(0), {
+        fromPosition: [currentLinkOffset.x, currentLinkOffset.y, 0],
+        position: [targetPos.x, targetPos.y, 0],
+        delay: 300 + ($currentOtherLinks.get().length - 5) * 30,
+        duration: 500,
+        easing: 'ease',
+        allDone: animateMainViewIn
+      });
+
+    }
+    else {
+      $currentItem.attr('data-type', '');
+      snabbt($currentItem.get(0), {
+        fromPosition: [currentLinkOffset.x, currentLinkOffset.y, 0],
+        position: [-currentBoundingRect.width / 2, -currentBoundingRect.height / 2, 0],
+        fromOpacity: 1,
+        opacity: 0,
+        fromScale: [1, 1],
+        scale: [0, 0],
+        delay: 300 + ($currentOtherLinks.get().length - 5) * 30,
+        duration: 300,
+        easing: 'easeIn',
+        allDone: animateMainViewIn
+      });
+    }
+
+    function animateMainViewIn() {
 
       // Switch the views.
       $connectionsView.removeClass('active');
       $mainView.addClass('active');
 
-      // Hide back button.
-      snabbt($actionBack.get(0), {
-        fromOpacity: 1,
-        opacity: 0,
-        fromPosition: [0, 0, 0],
-        position: [-$actionBack.width(), 0, 0],
-        duration: 400,
-        easing: 'easeIn',
+      // Animate in all categories except the target category.
+      snabbt(_.shuffle($otherLinks.get()), {
+        fromOpacity: 0,
+        opacity: 1,
+        fromScale: [0, 0],
+        scale: [1, 1],
+        delay: function (i) { return i * 30; },
+        duration: 300,
+        easing: 'easeOut',
         allDone: function () {
-          $actionBack.get(0).style.display = 'none';
-          $actionBack.get(0).offsetHeight;
-          $actionBack.get(0).style.display = '';
+          animDeferreds[0].resolve();
         }
+      });
+
+    }
+
+    palikka.when(animDeferreds).then(function () {
+
+      // Remove all animation related inline styles.
+      $mainView
+      .add($otherLinks)
+      .css({
+        transition: '',
+        transform: '',
+        opacity: '',
+        zIndex: '',
+        width: '',
+        height: ''
       });
 
       isTransitioningView = false;

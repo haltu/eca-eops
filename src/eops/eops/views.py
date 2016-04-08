@@ -13,6 +13,8 @@ LOG = logging.getLogger(__name__)
 
 def get_data(i):
   choices = [
+    'elavaOPSv5.json',
+    'elavaOPSv6.json',
     'elavaOPSv3.json',
     'elavaOPSv4.json',
     ]
@@ -20,7 +22,7 @@ def get_data(i):
     fn = choices[int(i)]
   except (IndexError, ValueError):
     fn = choices[0]
-  with open(join(DATADIR, fn)) as data_file:    
+  with open(join(DATADIR, fn)) as data_file:
     data = json.load(data_file)
   return data
 
@@ -29,8 +31,10 @@ class IndexView(TemplateView):
   template_name = 'eops/views/index.html'
 
   def get_context_data(self):
+    active_dataset = int(self.request.GET.get('d', 0))
     context = {
-      'data': json.dumps(get_data(self.request.GET.get('d', 0)))
+      'data': json.dumps(get_data(active_dataset)),
+      'active_dataset': active_dataset,
     }
     return context
 

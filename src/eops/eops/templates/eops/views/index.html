@@ -13,7 +13,12 @@
   </head>
   <body>
     <header class="noselect">
-      <h1>Elävä opetussuunitelma</h1>
+      <h1>Elävä opetussuunnitelma</h1>
+      <div class="dataset-choices">
+        <a href="?d=0" class="dataset-choice{% if active_dataset == 0 %} active{% endif %}">Matematiikka</a>
+        <span>&mdash;</span>
+        <a href="?d=1" class="dataset-choice{% if active_dataset == 1 %} active{% endif %}">Kansallinen</a>
+      </div>
     </header>
     <div class="action action-back noselect"><i class="material-icons">&#xE317;</i></div>
     <div class="action action-info noselect"><i class="action-info-icon-inactive material-icons">&#xE88F;</i><i class="action-info-icon-active material-icons">&#xE5CD;</i></div>
@@ -33,7 +38,7 @@
 
     <div id="info">
 
-      <h2>Elävä opetussuunitelma</h2>
+      <h2>Elävä opetussuunnitelma</h2>
 
       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis placerat nisl ut velit dignissim vulputate. Sed varius nec elit in tristique. Sed in libero nulla. Quisque vel mauris ante. Nunc quis sapien urna. Etiam sed mauris ut sapien fermentum volutpat. In vitae lacus dapibus, pulvinar ex sed, aliquet nunc. Integer non risus odio. Fusce pretium dapibus mi, tempus tristique magna vestibulum vel.</p>
 

@@ -33,16 +33,37 @@ header {
   height: 60px;
   opacity: 0;
   z-index: 10;
+  color: #fff;
 }
 header h1 {
   margin: 0;
   padding: 0;
-  line-height: 60px;
+  line-height: 40px;
   font-size: 40px;
   font-weight: 100;
   text-align: center;
   text-transform: uppercase;
   letter-spacing: 2px;
+}
+.dataset-choices {
+  padding: 3px;
+  font-weight: 300;
+  text-align: center;
+  color: #867DBB;
+}
+.dataset-choice {
+  display: inline-block;
+  margin: 0 7px;
+  line-height: 1;
+  text-decoration: none;
+  border-bottom: 1px solid #867DBB;
+  color: #867DBB;
+}
+.dataset-choice.active {
+  border-bottom-width: 2px;
+}
+.dataset-choice:hover {
+  border-color: #fff;
   color: #fff;
 }
 
