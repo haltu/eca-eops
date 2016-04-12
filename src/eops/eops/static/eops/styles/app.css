@@ -101,7 +101,7 @@ header h1 {
 .action-info {
   right: 20px;
 }
-.action-main {
+.action-back {
   left: 20px;
 }
 
@@ -211,7 +211,7 @@ header h1 {
   left: 10px;
   right: 10px;
   bottom: 10px;
-  background: rgba(95, 54, 111, 0.1);
+  background: rgba(200,200,200,0.1);
   border-bottom: 20px solid rgba(0,0,0,0.1);
   color: #fff;
   text-align: center;
@@ -239,6 +239,7 @@ header h1 {
 }
 .category-item[data-type="placeholder"] .category-item-link {
   cursor: default;
+  pointer-events: none;
 }
 .category-item[data-type="space"] {
   pointer-events: none;
@@ -328,7 +329,7 @@ header h1 {
 }
 .category-info-description::-webkit-scrollbar-track {
   border-radius: 6px;
-  background: rgba(0,0,0,0.2);
+  background: rgba(0,0,0,0.1);
 }
 .category-info-description::-webkit-scrollbar-thumb {
   border-radius: 6px;
@@ -356,7 +357,7 @@ header h1 {
   background: rgba(0,0,0,0);
 }
 .category-articles.scrollbar-visible::-webkit-scrollbar-track {
-  background: rgba(0,0,0,0.3);
+  background: rgba(0,0,0,0.1);
 }
 .category-articles::-webkit-scrollbar-thumb {
   border-radius: 6px;
@@ -377,8 +378,8 @@ header h1 {
 }
 .category-article:hover,
 .category-article.active {
-  color: #7C6CD6;
-  border-color: #7C6CD6;
+  color: inherit;
+  border-color: inherit;
 }
 
 /* Article detail */
@@ -422,7 +423,7 @@ header h1 {
 }
 .category-article-detail-description::-webkit-scrollbar-track {
   border-radius: 6px;
-  background: rgba(0,0,0,0.3);
+  background: rgba(0,0,0,0.1);
 }
 .category-article-detail-description::-webkit-scrollbar-thumb {
   border-radius: 6px;
@@ -433,11 +434,8 @@ header h1 {
 
 .category-article-rating {
   font-size: 26px;
-  color: rgba(0,0,0,0.3);
+  color: rgba(0,0,0,0.1);
   padding-bottom: 10px;
-}
-.category-article-rating > span {
-  color: #ccc;
 }
 .category-article-thumbs-rating,
 .category-article-star-rating {
@@ -452,6 +450,7 @@ header h1 {
 }
 .category-article-thumbs-rating-btn {
   padding: 0 3px;
+  color: rgba(0,0,0,0.3);
 }
 .category-article-thumbs-rating-radio,
 .category-article-star-rating-radio {
@@ -461,11 +460,11 @@ header h1 {
   opacity: 0;
   pointer-events: none;
 }
-
-
+.category-article-thumbs-rating-btn[for="article-thumbs-up-"]:hover,
 .category-article-thumbs-up-btn {
   color: #8BC34A;
 }
+.category-article-thumbs-rating-btn[for="article-thumbs-down-"]:hover,
 .category-article-thumbs-down-btn {
   color: #F44336;
 }
@@ -476,7 +475,6 @@ header h1 {
 .category-article-thumbs-rating-radio:checked + .category-article-thumbs-rating-btn + .category-article-thumbs-rating-btn {
   display: block;
 }
-
 .category-article-star-rating-btn {
   color: #FFCA00;
 }

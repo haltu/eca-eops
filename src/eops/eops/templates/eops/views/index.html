@@ -58,8 +58,8 @@
         <div class="category-items noselect">
           <div class="category-items-container">
             {{# categories }}
-              <div class="category-item" data-id="{{ id }}" data-article="{{ articles.0 }}" data-type="{{ type }}">
-                <div class="category-item-link" style="background-color: {{ color }};">
+              <div class="category-item" data-id="{{ id }}" data-article="{{ articles.0 }}" data-type="{{ type }}" data-color="{{ color.rgb }}">
+                <div class="category-item-link" style="border-color: {{ color }}; color: {{ color }}; background: linear-gradient(135deg, rgba(200,200,200,0.1) 0%, rgba({{ color.r }},{{ color.g }},{{ color.b }},0.1) 100%);">
                   <div class="category-item-table">
                     <div class="category-item-td">
                       {{ title }}
@@ -76,7 +76,15 @@
 
         <div class="category-detail">
 
-          <div class="category-info" style="background-color: {{ category.color.transparent }};">
+          <style type="text/css" scoped>
+            .category-info-description::-webkit-scrollbar-thumb,
+            .category-articles.scrollbar-visible::-webkit-scrollbar-thumb,
+            .category-article-detail-description::-webkit-scrollbar-thumb {
+              background: rgba({{ category.color.r }}, {{ category.color.g }}, {{ category.color.b }}, 0.5);
+            }
+          </style>
+
+          <div class="category-info" style="border-color: {{ category.color }}; color: {{ category.color }}; background: linear-gradient(135deg, rgba(200,200,200,0.1) 0%, rgba({{ category.color.r }},{{ category.color.g }},{{ category.color.b }},0.1) 100%);">
             <table>
               <tr>
                 <td>
@@ -86,14 +94,14 @@
               <tr>
                 <td>
                   <div class="category-info-description">
-                    <div class="category-info-description-content">{{ category.description }}</div>
+                    <div class="category-info-description-content" style="color: {{ category.color.darker }}">{{ category.description }}</div>
                   </div>
                 </td>
               </tr>
             </table>
           </div>
 
-          <div class="category-articles">
+          <div class="category-articles" style="color: {{ category.color.darker }};">
             {{# category.articles }}
               <div class="category-article noselect {{# active }}active{{/ active }}" data-id="{{ id }}">{{ title }}</div>
             {{/ category.articles }}

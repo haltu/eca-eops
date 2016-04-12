@@ -132,9 +132,9 @@ palikka
 
     function colorizeCategory(category) {
 
-      // if (category.cluster) {
+      // if (category && category.cluster) {
       //   category.color = color(category.cluster);
-      if (category.title) {
+      if (category && category.title) {
         category.color = color(category.title);
       }
 
@@ -177,72 +177,26 @@ palikka
     hue += ratio * hashCode(string);
     hue %= 1;
 
-    // Color variations
-
-    colorVariation = 5;
-
-    if (colorVariation == 1) {
-      // Color from palette
-      paletteIndex = Math.round(hue * (paletteLength - 1));
-      return palette[paletteIndex];
-    }
-    else if (colorVariation == 2) {
-      // Color from palette
-      paletteIndex = Math.round(hue * (palette2.length - 1));
-      return palette2[paletteIndex];
-    }
-    else if (colorVariation == 3) {
-      // Raw hue from 0 to 360 using HUSL to maintain legibility
-      hue = Math.round(hue * 360);
-      return HUSL.toHex(hue, 100, 60);
-    }
-    else if (colorVariation == 4) {
-      // Raw hue from 0 to 360
-      hue = Math.round(hue * 360);
-      return 'hsl(' + hue + ', 100%, 60%)';
-    }
-    else if (colorVariation == 5) {
-      // Raw hue from 0 to 360 using HUSL + WCAG 1.0 brightness
-      var color, colorHUSL, brightness;
-      hue = Math.round(hue * 360);
-      color = tinycolor('hsl(' + hue + ', ' + 100 + '%, ' + 60 + '%)');
-      colorHUSL = tinycolor(HUSL.toHex(hue, 100, 60));
-      brightness = color.getBrightness() / 255;
-      brightness = Math.max(brightness - 0.3, 0);
-      color._r = color._r - (color._r - colorHUSL._r) * brightness;
-      color._g = color._g - (color._g - colorHUSL._g) * brightness;
-      color._b = color._b - (color._b - colorHUSL._b) * brightness;
-      var colorString = color.toHexString();
-      color.setAlpha(0.80);
-      var colorStringTrans = color.toRgbString();
-      return {
-        transparent: colorStringTrans,
-        toString: function toString() {
-          return colorString;
-        }
-      };
-    }
-    else if (colorVariation == 6) {
-      // Raw hue from 0 to 360 using HUSL + WCAG 1.0 brightness
-      var color, colorHUSL, brightness;
-      hue = Math.round(hue * 360);
-      color = tinycolor('hsl(' + hue + ', ' + 90 + '%, ' + 75 + '%)');
-      colorHUSL = tinycolor(HUSL.toHex(hue, 90, 75));
-      brightness = color.getBrightness() / 255;
-      brightness = Math.max(brightness - 0.3, 0);
-      color._r = color._r - (color._r - colorHUSL._r) * brightness;
-      color._g = color._g - (color._g - colorHUSL._g) * brightness;
-      color._b = color._b - (color._b - colorHUSL._b) * brightness;
-      var colorString = color.toHexString();
-      color.setAlpha(0.80);
-      var colorStringTrans = color.toRgbString();
-      return {
-        transparent: colorStringTrans,
-        toString: function toString() {
-          return colorString;
-        }
-      };
-    }
+    // Raw hue from 0 to 360 using HUSL + WCAG 1.0 brightness
+    var color, colorHUSL, brightness;
+    hue = Math.round(hue * 360);
+    color = tinycolor('hsl(' + hue + ', ' + 100 + '%, ' + 60 + '%)');
+    colorHUSL = tinycolor(HUSL.toHex(hue, 100, 60));
+    brightness = color.getBrightness() / 255;
+    brightness = Math.max(brightness - 0.3, 0);
+    color._r = color._r - (color._r - colorHUSL._r) * brightness;
+    color._g = color._g - (color._g - colorHUSL._g) * brightness;
+    color._b = color._b - (color._b - colorHUSL._b) * brightness;
+    var colorString = color.toHexString();
+    return {
+      r: parseInt(color._r),
+      g: parseInt(color._g),
+      b: parseInt(color._b),
+      darker: color.desaturate(10).darken(10).toString(),
+      toString: function toString() {
+        return colorString;
+      }
+    };
 
   }
 
@@ -841,6 +795,8 @@ palikka
     // TODO: The center item jumps on animation start, fix it! It's a snabbt bug,
     // we need to forcefeed the position for the one item.
     snabbt(_.shuffle($otherLinks.get()), {
+      fromPosition: [0,0,0],
+      position: [0,0,0],
       fromOpacity: 1,
       opacity: 0,
       fromScale: [1, 1],
@@ -908,6 +864,7 @@ palikka
           });
 
           // Animate category articles into view.
+          // TODO: Animate only initially visible items...
           snabbt($categoryArticlesItems.get(), {
             fromOpacity: 0,
             opacity: 1,
@@ -998,33 +955,8 @@ palikka
     var $currentOtherItems = $currentCategoryItems.not($currentItem);
     var $currentOtherLinks = $currentCategoryLinks.not($currentLink);
 
-    // Get target items position data for animating the category info.
+    // When animations are done.
     var animDeferreds = [palikka.defer()];
-    var currentBoundingRect = $currentLink.get(0).getBoundingClientRect();
-    var currentOtherLinksData = [];
-    var currentLinkOffset = {
-      x: currentBoundingRect.width / 2 + 10,
-      y: currentBoundingRect.height / 2 + 10
-    };
-    if ($targetLink.length) {
-      var targetBoundingRect = $targetLink.get(0).getBoundingClientRect();
-      var targetPos = {
-        x: targetBoundingRect.left - currentBoundingRect.left + currentLinkOffset.x,
-        y: targetBoundingRect.top - currentBoundingRect.top + currentLinkOffset.y
-      };
-    }
-
-    $currentOtherLinks.each(function (index, element) {
-
-      var boundingRect = element.getBoundingClientRect();
-      currentOtherLinksData[index] = {};
-      currentOtherLinksData[index].boundingRect = boundingRect;
-      currentOtherLinksData[index].animPos = {
-        x: currentBoundingRect.left - boundingRect.left,
-        y: currentBoundingRect.top - boundingRect.top,
-      };
-
-    });
 
     // Remove hover and unhonver classes.
     hoverTimeout = clearTimeout(hoverTimeout);
@@ -1045,55 +977,95 @@ palikka
       }
     });
 
-    $currentItem.css({
-      transition: 'none',
-      zIndex: 20
-    })
+    palikka.defer(function (resolve) {
 
-    // Hide all categories except the target category.
-    snabbt($currentOtherLinks.get(), {
-      fromOpacity: 1,
-      opacity: 0,
-      fromScale: [1, 1],
-      scale: [0.7, 0.7],
-      fromPosition: [0, 0, 0],
-      position: function (i, total) {
-        return [currentOtherLinksData[i].animPos.x, currentOtherLinksData[i].animPos.y, 0];
-      },
-      delay: function (i, total) {
-        return i * 30;
-      },
-      duration: 300,
-      easing: 'easeOut',
-    });
+      if (parseFloat($currentItem.css('opacity')) !== 1) {
+        $currentItem.get(0).addEventListener(transitionend, resolve, false);
+      }
+      else {
+        resolve();
+      }
 
-    if ($targetItem.length) {
-      $currentItem.attr('data-type', '');
-      snabbt($currentItem.get(0), {
-        fromPosition: [currentLinkOffset.x, currentLinkOffset.y, 0],
-        position: [targetPos.x, targetPos.y, 0],
-        delay: 300 + ($currentOtherLinks.get().length - 5) * 30,
-        duration: 500,
-        easing: 'ease',
-        allDone: animateMainViewIn
+    }).then(function () {
+
+      // Get target items position data for animating the category info.
+      var currentBoundingRect = $currentLink.get(0).getBoundingClientRect();
+      var currentOtherLinksData = [];
+      var currentLinkOffset = {
+        x: currentBoundingRect.width / 2 + 10,
+        y: currentBoundingRect.height / 2 + 10
+      };
+
+      if ($targetLink.length) {
+        var targetBoundingRect = $targetLink.get(0).getBoundingClientRect();
+        var targetPos = {
+          x: targetBoundingRect.left - currentBoundingRect.left + currentLinkOffset.x,
+          y: targetBoundingRect.top - currentBoundingRect.top + currentLinkOffset.y
+        };
+      }
+
+      $currentOtherLinks.each(function (index, element) {
+        var boundingRect = element.getBoundingClientRect();
+        currentOtherLinksData[index] = {};
+        currentOtherLinksData[index].boundingRect = boundingRect;
+        currentOtherLinksData[index].animPos = {
+          x: currentBoundingRect.left - boundingRect.left,
+          y: currentBoundingRect.top - boundingRect.top,
+        };
       });
 
-    }
-    else {
-      $currentItem.attr('data-type', '');
-      snabbt($currentItem.get(0), {
-        fromPosition: [currentLinkOffset.x, currentLinkOffset.y, 0],
-        position: [-currentBoundingRect.width / 2, -currentBoundingRect.height / 2, 0],
+      // Setup the top card of the deck.
+      $currentItem.css({
+        transition: 'none',
+        zIndex: 20
+      });
+
+      // Hide all categories except the target category.
+      snabbt($currentOtherLinks.get(), {
         fromOpacity: 1,
         opacity: 0,
         fromScale: [1, 1],
-        scale: [0, 0],
-        delay: 300 + ($currentOtherLinks.get().length - 5) * 30,
+        scale: [0.7, 0.7],
+        fromPosition: [0, 0, 0],
+        position: function (i, total) {
+          return [currentOtherLinksData[i].animPos.x, currentOtherLinksData[i].animPos.y, 0];
+        },
+        delay: function (i, total) {
+          return i * 30;
+        },
         duration: 300,
-        easing: 'easeIn',
-        allDone: animateMainViewIn
+        easing: 'easeOut',
       });
-    }
+
+      $currentItem.attr('data-type', '');
+      if ($targetItem.length) {
+        snabbt($currentItem.get(0), {
+          fromPosition: [currentLinkOffset.x, currentLinkOffset.y, 0],
+          position: [targetPos.x, targetPos.y, 0],
+          delay: 300 + ($currentOtherLinks.get().length - 5) * 30,
+          duration: 500,
+          easing: 'ease',
+          allDone: animateMainViewIn
+        });
+
+      }
+      else {
+        snabbt($currentItem.get(0), {
+          fromPosition: [currentLinkOffset.x, currentLinkOffset.y, 0],
+          position: [-currentBoundingRect.width / 2, -currentBoundingRect.height / 2, 0],
+          fromOpacity: 1,
+          opacity: 0,
+          fromScale: [1, 1],
+          scale: [0, 0],
+          delay: 300 + ($currentOtherLinks.get().length - 5) * 30,
+          duration: 300,
+          easing: 'easeIn',
+          allDone: animateMainViewIn
+        });
+      }
+
+
+    });
 
     function animateMainViewIn() {
 
