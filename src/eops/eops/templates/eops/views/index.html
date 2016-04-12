@@ -107,6 +107,50 @@
                 </td>
               </tr>
               <tr>
+                <td class="category-article-rating">
+                  <div class="category-article-thumbs-rating noselect">
+                    <input class="category-article-thumbs-rating-radio" type="radio" id="article-thumbs-none-{{ article-id }}" name="article-thumbs-{{ article-id }}" />
+                    <input class="category-article-thumbs-rating-radio" type="radio" id="article-thumbs-down-{{ article-id }}" name="article-thumbs-{{ article-id }}" />
+                    <label class="category-article-thumbs-rating-btn" for="article-thumbs-down-{{ article-id }}">
+                      <span class="material-icons">&#xE8DB;</span>
+                    </label>
+                    <label class="category-article-thumbs-rating-btn category-article-thumbs-down-btn" for="article-thumbs-none-{{ article-id }}">
+                      <span class="material-icons">&#xE8DB;</span>
+                    </label>
+                    <input class="category-article-thumbs-rating-radio" type="radio" id="article-thumbs-up-{{ article-id }}" name="article-thumbs-{{ article-id }}" />
+                    <label class="category-article-thumbs-rating-btn" for="article-thumbs-up-{{ article-id }}">
+                      <span class="material-icons">&#xE8DC;</span>
+                    </label>
+                    <label class="category-article-thumbs-rating-btn category-article-thumbs-up-btn" for="article-thumbs-none-{{ article-id }}">
+                      <span class="material-icons">&#xE8DC;</span>
+                    </label>
+                  </div>
+                  <span>&nbsp;/&nbsp;</span>
+                  <div class="category-article-star-rating noselect">
+                    <label class="category-article-star-rating-btn" for="article-star-1-{{ article-id }}">
+                      <span class="material-icons">&#xE838;</span>
+                    </label>
+                    <input class="category-article-star-rating-radio" type="radio" id="article-star-1-{{ article-id }}" name="article-star-{{ article-id }}" />
+                    <label class="category-article-star-rating-btn" for="article-star-2-{{ article-id }}">
+                      <span class="material-icons">&#xE838;</span>
+                    </label>
+                    <input class="category-article-star-rating-radio" type="radio" id="article-star-2-{{ article-id }}" name="article-star-{{ article-id }}" />
+                    <label class="category-article-star-rating-btn" for="article-star-3-{{ article-id }}">
+                      <span class="material-icons">&#xE838;</span>
+                    </label>
+                    <input class="category-article-star-rating-radio" type="radio" id="article-star-3-{{ article-id }}" name="article-star-{{ article-id }}" checked />
+                    <label class="category-article-star-rating-btn" for="article-star-4-{{ article-id }}">
+                      <span class="material-icons">&#xE838;</span>
+                    </label>
+                    <input class="category-article-star-rating-radio" type="radio" id="article-star-4-{{ article-id }}" name="article-star-{{ article-id }}" />
+                    <label class="category-article-star-rating-btn" for="article-star-5-{{ article-id }}">
+                      <span class="material-icons">&#xE838;</span>
+                    </label>
+                    <input class="category-article-star-rating-radio" type="radio" id="article-star-5-{{ article-id }}" name="article-star-{{ article-id }}" />
+                  </div>
+                </td>
+              </tr>
+              <tr>
                 <td>
                   <div class="category-article-detail-description">
                     <div class="category-article-detail-description-content">{{ article.content }}</div>
@@ -127,6 +171,50 @@
             <tr>
               <td>
                 <h2 class="category-article-detail-title">{{ article.title }}</h2>
+              </td>
+            </tr>
+            <tr>
+              <td class="category-article-rating">
+                <div class="category-article-thumbs-rating noselect">
+                  <input class="category-article-thumbs-rating-radio" type="radio" id="article-thumbs-none-{{ article-id }}" name="article-thumbs-{{ article-id }}" />
+                  <input class="category-article-thumbs-rating-radio" type="radio" id="article-thumbs-down-{{ article-id }}" name="article-thumbs-{{ article-id }}" />
+                  <label class="category-article-thumbs-rating-btn" for="article-thumbs-down-{{ article-id }}">
+                    <span class="material-icons">&#xE8DB;</span>
+                  </label>
+                  <label class="category-article-thumbs-rating-btn category-article-thumbs-down-btn" for="article-thumbs-none-{{ article-id }}">
+                    <span class="material-icons">&#xE8DB;</span>
+                  </label>
+                  <input class="category-article-thumbs-rating-radio" type="radio" id="article-thumbs-up-{{ article-id }}" name="article-thumbs-{{ article-id }}" />
+                  <label class="category-article-thumbs-rating-btn" for="article-thumbs-up-{{ article-id }}">
+                    <span class="material-icons">&#xE8DC;</span>
+                  </label>
+                  <label class="category-article-thumbs-rating-btn category-article-thumbs-up-btn" for="article-thumbs-none-{{ article-id }}">
+                    <span class="material-icons">&#xE8DC;</span>
+                  </label>
+                </div>
+                <span>&nbsp;/&nbsp;</span>
+                <div class="category-article-star-rating noselect">
+                  <label class="category-article-star-rating-btn" for="article-star-1-{{ article-id }}">
+                    <span class="material-icons">&#xE838;</span>
+                  </label>
+                  <input class="category-article-star-rating-radio" type="radio" id="article-star-1-{{ article-id }}" name="article-star-{{ article-id }}" />
+                  <label class="category-article-star-rating-btn" for="article-star-2-{{ article-id }}">
+                    <span class="material-icons">&#xE838;</span>
+                  </label>
+                  <input class="category-article-star-rating-radio" type="radio" id="article-star-2-{{ article-id }}" name="article-star-{{ article-id }}" />
+                  <label class="category-article-star-rating-btn" for="article-star-3-{{ article-id }}">
+                    <span class="material-icons">&#xE838;</span>
+                  </label>
+                  <input class="category-article-star-rating-radio" type="radio" id="article-star-3-{{ article-id }}" name="article-star-{{ article-id }}" checked />
+                  <label class="category-article-star-rating-btn" for="article-star-4-{{ article-id }}">
+                    <span class="material-icons">&#xE838;</span>
+                  </label>
+                  <input class="category-article-star-rating-radio" type="radio" id="article-star-4-{{ article-id }}" name="article-star-{{ article-id }}" />
+                  <label class="category-article-star-rating-btn" for="article-star-5-{{ article-id }}">
+                    <span class="material-icons">&#xE838;</span>
+                  </label>
+                  <input class="category-article-star-rating-radio" type="radio" id="article-star-5-{{ article-id }}" name="article-star-{{ article-id }}" />
+                </div>
               </td>
             </tr>
             <tr>

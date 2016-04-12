@@ -222,6 +222,27 @@ palikka
         }
       };
     }
+    else if (colorVariation == 6) {
+      // Raw hue from 0 to 360 using HUSL + WCAG 1.0 brightness
+      var color, colorHUSL, brightness;
+      hue = Math.round(hue * 360);
+      color = tinycolor('hsl(' + hue + ', ' + 90 + '%, ' + 75 + '%)');
+      colorHUSL = tinycolor(HUSL.toHex(hue, 90, 75));
+      brightness = color.getBrightness() / 255;
+      brightness = Math.max(brightness - 0.3, 0);
+      color._r = color._r - (color._r - colorHUSL._r) * brightness;
+      color._g = color._g - (color._g - colorHUSL._g) * brightness;
+      color._b = color._b - (color._b - colorHUSL._b) * brightness;
+      var colorString = color.toHexString();
+      color.setAlpha(0.80);
+      var colorStringTrans = color.toRgbString();
+      return {
+        transparent: colorStringTrans,
+        toString: function toString() {
+          return colorString;
+        }
+      };
+    }
 
   }
 
@@ -804,16 +825,21 @@ palikka
     $articleDetail.css('opacity', 0);
 
     // Setup non-target cateogries for animation.
-    $otherItems
-    .css('opacity', $otherItems.first().css('opacity'))
-    .css('transform', $otherItems.first().css('transform'))
-    .css('transition', 'none');
+    $otherItems.each(function () {
+      var $this = $(this);
+      $this
+      .css('opacity', $this.css('opacity'))
+      .css('transform', $this.css('transform'))
+      .css('transition', 'none');
+    });
 
     // Remove hover and unhonver classes.
     hoverTimeout = clearTimeout(hoverTimeout);
     $categoryItems.removeClass('hover unhover');
 
     // Hide all categories except the target category.
+    // TODO: The center item jumps on animation start, fix it! It's a snabbt bug,
+    // we need to forcefeed the position for the one item.
     snabbt(_.shuffle($otherLinks.get()), {
       fromOpacity: 1,
       opacity: 0,
